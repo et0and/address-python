@@ -1,7 +1,7 @@
 # Address Python API library
 
 <!-- prettier-ignore -->
-[![PyPI version](https://img.shields.io/pypi/v/address.svg?label=pypi%20(stable))](https://pypi.org/project/address/)
+[![PyPI version](https://img.shields.io/pypi/v/address-sdk.svg?label=pypi%20(stable))](https://pypi.org/project/address-sdk/)
 
 The Address Python library provides convenient access to the Address REST API from any Python 3.9+
 application. The library includes type definitions for all request params and response fields,
@@ -16,12 +16,9 @@ The REST API documentation can be found on [address.tom.so](https://address.tom.
 ## Installation
 
 ```sh
-# install from the production repo
-pip install git+ssh://git@github.com/et0and/address-python.git
+# install from PyPI
+pip install address-sdk
 ```
-
-> [!NOTE]
-> Once this package is [published to PyPI](https://www.stainless.com/docs/guides/publish), this will become: `pip install address`
 
 ## Usage
 
@@ -69,8 +66,8 @@ By default, the async client uses `httpx` for HTTP requests. However, for improv
 You can enable this by installing `aiohttp`:
 
 ```sh
-# install from the production repo
-pip install 'address[aiohttp] @ git+ssh://git@github.com/et0and/address-python.git'
+# install from PyPI
+pip install address-sdk[aiohttp]
 ```
 
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
