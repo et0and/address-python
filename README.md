@@ -16,8 +16,8 @@ The REST API documentation can be found on [address.tom.so](https://address.tom.
 ## Installation
 
 ```sh
-# install from this staging repo
-pip install git+ssh://git@github.com/stainless-sdks/address-python.git
+# install from the production repo
+pip install git+ssh://git@github.com/et0and/address-python.git
 ```
 
 > [!NOTE]
@@ -69,8 +69,8 @@ By default, the async client uses `httpx` for HTTP requests. However, for improv
 You can enable this by installing `aiohttp`:
 
 ```sh
-# install from this staging repo
-pip install 'address[aiohttp] @ git+ssh://git@github.com/stainless-sdks/address-python.git'
+# install from the production repo
+pip install 'address[aiohttp] @ git+ssh://git@github.com/et0and/address-python.git'
 ```
 
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
@@ -231,9 +231,9 @@ health = response.parse()  # get the object that `health.check()` would have ret
 print(health.status)
 ```
 
-These methods return an [`APIResponse`](https://github.com/stainless-sdks/address-python/tree/main/src/address/_response.py) object.
+These methods return an [`APIResponse`](https://github.com/et0and/address-python/tree/main/src/address/_response.py) object.
 
-The async client returns an [`AsyncAPIResponse`](https://github.com/stainless-sdks/address-python/tree/main/src/address/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
+The async client returns an [`AsyncAPIResponse`](https://github.com/et0and/address-python/tree/main/src/address/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
 
 #### `.with_streaming_response`
 
@@ -337,7 +337,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/address-python/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/et0and/address-python/issues) with questions, bugs, or suggestions.
 
 ### Determining the installed version
 
