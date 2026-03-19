@@ -21,10 +21,6 @@ class SearchQueryResponseItem(BaseModel):
 
     longitude: float
 
-    postcode: str
-
-    region: str
-
     suburb: str
 
     territorial_authority: str = FieldInfo(alias="territorialAuthority")
@@ -32,6 +28,10 @@ class SearchQueryResponseItem(BaseModel):
     town_city: str = FieldInfo(alias="townCity")
 
     full_address_road: Optional[str] = FieldInfo(alias="fullAddressRoad", default=None)
+
+    postcode: Optional[str] = None
+
+    region: Optional[str] = None
 
 
 SearchQueryResponse: TypeAlias = List[SearchQueryResponseItem]
