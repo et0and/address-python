@@ -1,6 +1,6 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List
+from typing import List, Optional
 from typing_extensions import TypeAlias
 
 from pydantic import Field as FieldInfo
@@ -17,8 +17,6 @@ class ReverseGeocodeResponseItem(BaseModel):
 
     full_address_number: str = FieldInfo(alias="fullAddressNumber")
 
-    full_address_road: str = FieldInfo(alias="fullAddressRoad")
-
     latitude: float
 
     longitude: float
@@ -32,6 +30,8 @@ class ReverseGeocodeResponseItem(BaseModel):
     territorial_authority: str = FieldInfo(alias="territorialAuthority")
 
     town_city: str = FieldInfo(alias="townCity")
+
+    full_address_road: Optional[str] = FieldInfo(alias="fullAddressRoad", default=None)
 
 
 ReverseGeocodeResponse: TypeAlias = List[ReverseGeocodeResponseItem]
