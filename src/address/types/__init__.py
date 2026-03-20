@@ -5,7 +5,6 @@ from __future__ import annotations
 from .address_list_params import AddressListParams as AddressListParams
 from .search_query_params import SearchQueryParams as SearchQueryParams
 from .address_list_response import AddressListResponse as AddressListResponse
-from .get_api_info_response import GetAPIInfoResponse as GetAPIInfoResponse
 from .health_check_response import HealthCheckResponse as HealthCheckResponse
 from .search_query_response import SearchQueryResponse as SearchQueryResponse
 from .meta_retrieve_response import MetaRetrieveResponse as MetaRetrieveResponse

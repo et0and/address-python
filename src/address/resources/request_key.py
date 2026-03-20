@@ -22,9 +22,7 @@ __all__ = ["RequestKeyResource", "AsyncRequestKeyResource"]
 
 
 class RequestKeyResource(SyncAPIResource):
-    """
-    Health, API information, and API key onboarding endpoints that do not require authentication.
-    """
+    """Health and API key onboarding endpoints that do not require authentication."""
 
     @cached_property
     def with_raw_response(self) -> RequestKeyResourceWithRawResponse:
@@ -95,9 +93,7 @@ class RequestKeyResource(SyncAPIResource):
 
 
 class AsyncRequestKeyResource(AsyncAPIResource):
-    """
-    Health, API information, and API key onboarding endpoints that do not require authentication.
-    """
+    """Health and API key onboarding endpoints that do not require authentication."""
 
     @cached_property
     def with_raw_response(self) -> AsyncRequestKeyResourceWithRawResponse:
