@@ -1,15 +1,3 @@
-# Address
-
-Types:
-
-```python
-from address.types import GetAPIInfoResponse
-```
-
-Methods:
-
-- <code title="get /">client.<a href="./src/address/_client.py">get_api_info</a>() -> <a href="./src/address/types/get_api_info_response.py">GetAPIInfoResponse</a></code>
-
 # Health
 
 Types:

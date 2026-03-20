@@ -20,9 +20,7 @@ __all__ = ["ChallengeResource", "AsyncChallengeResource"]
 
 
 class ChallengeResource(SyncAPIResource):
-    """
-    Health, API information, and API key onboarding endpoints that do not require authentication.
-    """
+    """Health and API key onboarding endpoints that do not require authentication."""
 
     @cached_property
     def with_raw_response(self) -> ChallengeResourceWithRawResponse:
@@ -73,9 +71,7 @@ class ChallengeResource(SyncAPIResource):
 
 
 class AsyncChallengeResource(AsyncAPIResource):
-    """
-    Health, API information, and API key onboarding endpoints that do not require authentication.
-    """
+    """Health and API key onboarding endpoints that do not require authentication."""
 
     @cached_property
     def with_raw_response(self) -> AsyncChallengeResourceWithRawResponse:
