@@ -11,10 +11,7 @@ import httpx
 from . import _exceptions
 from ._qs import Querystring
 from ._types import (
-    Body,
     Omit,
-    Query,
-    Headers,
     Timeout,
     NotGiven,
     Transport,
@@ -22,25 +19,21 @@ from ._types import (
     RequestOptions,
     not_given,
 )
-from ._utils import is_given, get_async_library
+from ._utils import (
+    is_given,
+    is_mapping_t,
+    get_async_library,
+)
 from ._compat import cached_property
 from ._models import SecurityOptions
 from ._version import __version__
-from ._response import (
-    to_raw_response_wrapper,
-    to_streamed_response_wrapper,
-    async_to_raw_response_wrapper,
-    async_to_streamed_response_wrapper,
-)
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
 from ._exceptions import AddressError, APIStatusError
 from ._base_client import (
     DEFAULT_MAX_RETRIES,
     SyncAPIClient,
     AsyncAPIClient,
-    make_request_options,
 )
-from .types.get_api_info_response import GetAPIInfoResponse
 
 if TYPE_CHECKING:
     from .resources import meta, health, search, reverse, addresses, challenge, request_key
@@ -99,6 +92,15 @@ class Address(SyncAPIClient):
         if base_url is None:
             base_url = f"https://address.tom.so"
 
+        custom_headers_env = os.environ.get("ADDRESS_CUSTOM_HEADERS")
+        if custom_headers_env is not None:
+            parsed: dict[str, str] = {}
+            for line in custom_headers_env.split("\n"):
+                colon = line.find(":")
+                if colon >= 0:
+                    parsed[line[:colon].strip()] = line[colon + 1 :].strip()
+            default_headers = {**parsed, **(default_headers if is_mapping_t(default_headers) else {})}
+
         super().__init__(
             version=__version__,
             base_url=base_url,
@@ -112,27 +114,21 @@ class Address(SyncAPIClient):
 
     @cached_property
     def health(self) -> HealthResource:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.health import HealthResource
 
         return HealthResource(self)
 
     @cached_property
     def challenge(self) -> ChallengeResource:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.challenge import ChallengeResource
 
         return ChallengeResource(self)
 
     @cached_property
     def request_key(self) -> RequestKeyResource:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.request_key import RequestKeyResource
 
         return RequestKeyResource(self)
@@ -255,32 +251,6 @@ class Address(SyncAPIClient):
     # client.with_options(timeout=10).foo.create(...)
     with_options = copy
 
-    def get_api_info(
-        self,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> GetAPIInfoResponse:
-        """
-        Returns basic API information including available endpoints and version details.
-        This is the entry point for discovering the API capabilities.
-        """
-        return self.get(
-            "/",
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                security={},
-            ),
-            cast_to=GetAPIInfoResponse,
-        )
-
     @override
     def _make_status_error(
         self,
@@ -359,6 +329,15 @@ class AsyncAddress(AsyncAPIClient):
         if base_url is None:
             base_url = f"https://address.tom.so"
 
+        custom_headers_env = os.environ.get("ADDRESS_CUSTOM_HEADERS")
+        if custom_headers_env is not None:
+            parsed: dict[str, str] = {}
+            for line in custom_headers_env.split("\n"):
+                colon = line.find(":")
+                if colon >= 0:
+                    parsed[line[:colon].strip()] = line[colon + 1 :].strip()
+            default_headers = {**parsed, **(default_headers if is_mapping_t(default_headers) else {})}
+
         super().__init__(
             version=__version__,
             base_url=base_url,
@@ -372,27 +351,21 @@ class AsyncAddress(AsyncAPIClient):
 
     @cached_property
     def health(self) -> AsyncHealthResource:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.health import AsyncHealthResource
 
         return AsyncHealthResource(self)
 
     @cached_property
     def challenge(self) -> AsyncChallengeResource:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.challenge import AsyncChallengeResource
 
         return AsyncChallengeResource(self)
 
     @cached_property
     def request_key(self) -> AsyncRequestKeyResource:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.request_key import AsyncRequestKeyResource
 
         return AsyncRequestKeyResource(self)
@@ -515,32 +488,6 @@ class AsyncAddress(AsyncAPIClient):
     # client.with_options(timeout=10).foo.create(...)
     with_options = copy
 
-    async def get_api_info(
-        self,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> GetAPIInfoResponse:
-        """
-        Returns basic API information including available endpoints and version details.
-        This is the entry point for discovering the API capabilities.
-        """
-        return await self.get(
-            "/",
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                security={},
-            ),
-            cast_to=GetAPIInfoResponse,
-        )
-
     @override
     def _make_status_error(
         self,
@@ -581,33 +528,23 @@ class AddressWithRawResponse:
     def __init__(self, client: Address) -> None:
         self._client = client
 
-        self.get_api_info = to_raw_response_wrapper(
-            client.get_api_info,
-        )
-
     @cached_property
     def health(self) -> health.HealthResourceWithRawResponse:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.health import HealthResourceWithRawResponse
 
         return HealthResourceWithRawResponse(self._client.health)
 
     @cached_property
     def challenge(self) -> challenge.ChallengeResourceWithRawResponse:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.challenge import ChallengeResourceWithRawResponse
 
         return ChallengeResourceWithRawResponse(self._client.challenge)
 
     @cached_property
     def request_key(self) -> request_key.RequestKeyResourceWithRawResponse:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.request_key import RequestKeyResourceWithRawResponse
 
         return RequestKeyResourceWithRawResponse(self._client.request_key)
@@ -653,33 +590,23 @@ class AsyncAddressWithRawResponse:
     def __init__(self, client: AsyncAddress) -> None:
         self._client = client
 
-        self.get_api_info = async_to_raw_response_wrapper(
-            client.get_api_info,
-        )
-
     @cached_property
     def health(self) -> health.AsyncHealthResourceWithRawResponse:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.health import AsyncHealthResourceWithRawResponse
 
         return AsyncHealthResourceWithRawResponse(self._client.health)
 
     @cached_property
     def challenge(self) -> challenge.AsyncChallengeResourceWithRawResponse:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.challenge import AsyncChallengeResourceWithRawResponse
 
         return AsyncChallengeResourceWithRawResponse(self._client.challenge)
 
     @cached_property
     def request_key(self) -> request_key.AsyncRequestKeyResourceWithRawResponse:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.request_key import AsyncRequestKeyResourceWithRawResponse
 
         return AsyncRequestKeyResourceWithRawResponse(self._client.request_key)
@@ -725,33 +652,23 @@ class AddressWithStreamedResponse:
     def __init__(self, client: Address) -> None:
         self._client = client
 
-        self.get_api_info = to_streamed_response_wrapper(
-            client.get_api_info,
-        )
-
     @cached_property
     def health(self) -> health.HealthResourceWithStreamingResponse:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.health import HealthResourceWithStreamingResponse
 
         return HealthResourceWithStreamingResponse(self._client.health)
 
     @cached_property
     def challenge(self) -> challenge.ChallengeResourceWithStreamingResponse:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.challenge import ChallengeResourceWithStreamingResponse
 
         return ChallengeResourceWithStreamingResponse(self._client.challenge)
 
     @cached_property
     def request_key(self) -> request_key.RequestKeyResourceWithStreamingResponse:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.request_key import RequestKeyResourceWithStreamingResponse
 
         return RequestKeyResourceWithStreamingResponse(self._client.request_key)
@@ -797,33 +714,23 @@ class AsyncAddressWithStreamedResponse:
     def __init__(self, client: AsyncAddress) -> None:
         self._client = client
 
-        self.get_api_info = async_to_streamed_response_wrapper(
-            client.get_api_info,
-        )
-
     @cached_property
     def health(self) -> health.AsyncHealthResourceWithStreamingResponse:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.health import AsyncHealthResourceWithStreamingResponse
 
         return AsyncHealthResourceWithStreamingResponse(self._client.health)
 
     @cached_property
     def challenge(self) -> challenge.AsyncChallengeResourceWithStreamingResponse:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.challenge import AsyncChallengeResourceWithStreamingResponse
 
         return AsyncChallengeResourceWithStreamingResponse(self._client.challenge)
 
     @cached_property
     def request_key(self) -> request_key.AsyncRequestKeyResourceWithStreamingResponse:
-        """
-        Health, API information, and API key onboarding endpoints that do not require authentication.
-        """
+        """Health and API key onboarding endpoints that do not require authentication."""
         from .resources.request_key import AsyncRequestKeyResourceWithStreamingResponse
 
         return AsyncRequestKeyResourceWithStreamingResponse(self._client.request_key)
